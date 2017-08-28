@@ -1,0 +1,55 @@
+<html>
+
+<head>
+    <title>Search Music</title>
+    <script src="https://unpkg.com/vue"></script>
+    <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="app.css"></link>
+</head>
+
+<body>
+    <div id="app">
+        <div id="container">
+            <input class="searchBar" value="searched" type="text" v-model="searched" placeholder="Search..">
+            <button type="submit" @click="search"> Search </button>
+            <hr>
+            <div>
+                {{videos}}
+                <ul>
+                    <li>{{ videos }}</li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
+
+<script>
+    const API_KEY = 'AIzaSyDTo-6TsS1MSO5CkY10m5CXcKLO2XxEnjM';
+    const BASE_URL = 'https://www.googleapis.com/youtube/v3/';
+
+    var app = new Vue({
+        el: '#app',
+        data: {
+            videos: [],
+            searched: '',
+        },
+        methods: {
+            search: function () {
+                axios.get(BASE_URL + "search", { params: { part: 'snippet', key: API_KEY, q: this.searched, maxResults: 20 } })
+                    .then(function (response) {
+                        this.videos = response.data.items;
+                        console.log(videos)
+                    }).catch(function (error) {
+                        this.searched = 'No results';
+                    })
+            }
+        }
+    })
+
+</script>
