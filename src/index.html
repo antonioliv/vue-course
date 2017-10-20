@@ -1,29 +1,73 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 
 <head>
-    <title>Search Music</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="https://unpkg.com/vue"></script>
     <script type="text/javascript" src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" type="text/css" href="app.css"></link>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <title>YT Search Video</title>
 </head>
 
 <body>
     <div id="app">
-        <div id="container">
-            <input class="searchBar" value="searched" type="text" v-model="searched" placeholder="Search..">
-            <button type="submit" @click="search"> Search </button>
-            <hr>
-            <div>
-                {{videos}}
-                <ul>
-                    <li>{{ videos }}</li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
+
+        <!-- Navbar -->
+        <div class="header">
+            <div class="header-content">
+                <input class="searchbar" value="searched" type="text" v-model="searched" placeholder=" Search for a video" @keyup.enter="search"></input>
+                <button @click="search"> <i class="fa fa-search"></i></button>
             </div>
         </div>
+
+
+        <!-- Sidebar -->
+        <div class='sidebar'>
+            <div class='container-title'>
+                <h1> Filters </h1>
+            </div>
+            <div class='sidebar-content'>
+                <h3> Video Type:</h3>
+                <input type='radio' name='event' value='episode' v-model='videoType'>
+                <label> Episode </label>
+                <input type='radio' name='event' value='movie' v-model='videoType'>
+                <label> Movie </label>
+                <h3> Order by:</h3>
+                <input type='radio' name='order' value='date' v-model='order'>
+                <label> Date </label>
+                <input type='radio' name='order' value='rating' v-model='order'>
+                <label> Rating </label>
+                <input type='radio' name='order' value='relevance' v-model='order'>
+                <label> Relevance </label>
+                <input type='radio' name='order' value='title' v-model='order'>
+                <label> Title </label>
+                <h3> Max Results:</h3>
+                <input type='radio' name='results' value='10' v-model='maxResults'>
+                <label> 10 </label>
+                <input type='radio' name='results' value='20' v-model='maxResults'>
+                <label> 20 </label>
+            </div>
+        </div>
+
+
+        <!-- Container -->
+        <div id="container" class="container" style="margin-right:25%">
+
+            <div class="container-title">
+                <h1> <i class="fa fa-search"></i> YouTube Search Video</h1>
+            </div>
+
+            <div v-if="searching">
+                <h1> Searching... </h1>
+            </div>
+
+            <video-list v-for="video in videos" :video="video" :key="video.id">
+            </video-list>
+
+        </div>
+
     </div>
 </body>
 
@@ -38,18 +82,68 @@
         data: {
             videos: [],
             searched: '',
+            searching: false,
+            videoType: '',
+            order: '',
+            maxResults: '',
         },
+
         methods: {
-            search: function () {
-                axios.get(BASE_URL + "search", { params: { part: 'snippet', key: API_KEY, q: this.searched, maxResults: 20 } })
-                    .then(function (response) {
-                        this.videos = response.data.items;
-                        console.log(videos)
-                    }).catch(function (error) {
-                        this.searched = 'No results';
+
+            search() {
+                this.searching = false
+                this.videos = []
+                parameters = { part: 'snippet', key: API_KEY, q: this.searched, type: 'video' }
+                if(this.videoType !== ''){
+                    parameters['videoType'] = this.videoType
+                }
+                if (this.order !== ''){
+                    parameters['order'] = this.order
+                }
+                if (this.maxResults !== ''){
+                    parameters['maxResults'] = this.maxResults
+                }
+                axios.get(BASE_URL + "search", { params: parameters })
+                    .then(response => {
+                        var array = response.data.items;
+                        array.map(items => {
+                            var video = {}
+                            video["url"] = "https://www.youtube.com/embed/" + items.id.videoId,
+                                video["snippet"] = items.snippet,
+                                this.videos.push(video)
+                        })
+                    }).catch(error => {
+                        this.searched = error.data;
                     })
+                this.searched = ''
+            }
+        },
+
+        updated: function () {
+            if(this.searched !== ''){
+                this.searching = true
             }
         }
+
+    })
+
+
+    Vue.component('videoList', {
+        props: ['video'],
+        template:
+        "<div class='container-video'>\
+                <div class='container-video-video'>\
+                    <iframe width='500' height='400' :src=video.url></iframe>\
+                </div>\
+                <div class='container-video-info'>\
+                    <h2> Title: </h2>\
+                    <a>{{video.snippet.title}}</a>\
+                    <h2> Description: </h2>\
+                    <p>{{video.snippet.description}}</p>\
+                    <h2> Published at: </h2>\
+                    <p>{{video.snippet.publishedAt}}</p>\
+                <div>\
+            </div>"
     })
 
 </script>

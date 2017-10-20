@@ -1,21 +1,106 @@
-.searchBar {
-
-    width: 100%;
-    box-sizing: border-box;
-    border: 2px solid #ccc;
-    border-radius: 4px;
-    font-size: 16px;
-    background-color: white;
-    background-image: url('searchicon.png');
-    background-position: 10px 10px; 
-    background-repeat: no-repeat;
-    padding: 12px 20px 12px 40px;
-    -webkit-transition: width 0.4s ease-in-out;
-    transition: width 0.4s ease-in-out;
-    
+body {
+    margin: 0px;
 }
 
-img {
-    height: 204.9px;
-    width: 307.2px;
+.sidebar {
+    width:25%;
+    right:0;
+    height: 100%;
+    background-color: #fff;
+    position: fixed;
+    border-left: 1px;
+    border-left-color: #ccc;
+    border-left-style: solid;
 }
+
+.sidebar .sidebar-title, .sidebar-content, .container-video-info{
+    text-align: center;
+    font-family: "Segoe UI",Arial,sans-serif;
+    font-weight: 400;
+}
+
+.sidebar .sidebar-content{
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    padding-top: 20px;
+    padding-bottom: 40px;
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 10px #888888;
+}
+
+.container .container-video{
+    margin-top: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
+    padding-top: 20px;
+    border: 1px solid #ccc;
+    box-shadow: 3px 3px 10px #888888;
+    display: flex;
+}
+
+.container .container-video .container-video-info {
+    padding-left: 10px;
+    display: block;
+}
+
+.container .container-video .container-video-video {
+    padding-left: 15px;
+    padding-bottom: 15px;
+}
+
+.header {
+    display: flex;
+    align-items: center;
+    height: 70px;
+}
+
+.header .header-content {
+    position: absolute;
+    left: 35%;
+}
+
+hr {
+    border-color: #ccc;
+    border-style: inherit;
+}
+
+.searchbar {
+    height: 30px;
+    width: 450px;
+}
+
+button {
+    width: 50px;
+    height: 36px;
+    color:#333;
+    background-color: rgb(248, 248, 248);
+    margin-left: -4px;
+    border: 0.5px solid #c6c6c6;
+}
+.submit {
+    width: 70px;
+    margin-bottom: 10px;
+}
+
+button:hover {
+    color: #333;
+    background-color: #ccc;
+
+}
+
+.container-title {
+    text-align: center;
+    color: #fff;
+    background-color: hsl(0, 100%, 50%);
+    padding: 0.15px 16px 0.15px 16px;
+    box-shadow: 3px 3px 10px #888888;
+
+}
+.container-title h1 {
+    font-family: "Segoe UI",Arial,sans-serif;
+    font-weight: 400;
+    margin: 10px 0;
+}
+
