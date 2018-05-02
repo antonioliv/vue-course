@@ -1,3 +1,4 @@
+![alt text](http://screenpresence.co/images/toolkit-icons/vue.png)
 # vue-course
 Starting Guide: How to create an app with Vue.js
 
